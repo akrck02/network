@@ -21,21 +21,21 @@ import { UserValidationPipe } from 'src/pipes/user/user.pipe';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @UsePipes(UserValidationPipe)
   @Put('register')
+  @UsePipes(UserValidationPipe)
   async register(@Body() user: UserRegisterDto): Promise<User> {
     const result = await this.authService.register(user);
     return result;
   }
 
-  @UseGuards(LocalAuthGuard)
   @Post('login')
-  async login(@Req() request: Request) {
-    return this.authService.login(request.user);
+  @UseGuards(LocalAuthGuard)
+  async login(@Body() user: User) {
+    return this.authService.login(user);
   }
 
-  @UseGuards(JwtAuthGuard)
   @Get('profile')
+  @UseGuards(JwtAuthGuard)
   getProfile() {
     return {
       user: 'test',

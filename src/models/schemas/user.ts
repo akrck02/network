@@ -1,13 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument } from 'mongoose';
 import * as bcrypt from 'bcrypt';
+import { UserType } from 'src/constants/user';
 
 export type UserDocument = HydratedDocument<User>;
-
-enum UserType {
-  FREE = 0,
-  PREMIUM = 1,
-}
 
 const SALT_WORK_FACTOR = 10;
 

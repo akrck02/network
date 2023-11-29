@@ -5,6 +5,7 @@ import { UserErrors } from 'src/errors/errors';
 import { UserRegisterDto } from 'src/models/dto/UserRegister.dto';
 import { User, UserSchema } from 'src/models/schemas/user';
 import { JwtService } from '@nestjs/jwt';
+import { AuthTokenServeDto } from 'src/models/dto/AuthTokenServe.dto';
 
 @Injectable()
 export class AuthService {
@@ -16,13 +17,19 @@ export class AuthService {
 
   /**
    * Login a user
-   * @param user The user to be registered
+   * @param user The user to be logged in
    * @returns The updated auth JWT token
    */
-  async login(user: any) {
+  async login(user: any): Promise<AuthTokenServeDto> {
     const payload = { username: user.username, sub: user.userId };
+
+    const foundUser: User = await this.userModel.findOne({
+      email: user.username,
+    });
+
     return {
       access_token: this.jwtService.sign(payload),
+      user_type: foundUser?.type,
     };
   }
 

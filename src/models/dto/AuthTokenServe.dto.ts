@@ -1,4 +1,6 @@
+import { UserType } from 'src/constants/user';
+
 export class AuthTokenServeDto {
-  token: string;
-  user: string;
+  access_token: string;
+  user_type: UserType;
 }
