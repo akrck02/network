@@ -1,13 +1,18 @@
-import { HttpStatus, Injectable, PipeTransform } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  PipeTransform,
+} from '@nestjs/common';
 import * as Joi from 'joi';
-import { ApiError } from 'src/errors/apierror';
+import { AuthErrors } from 'src/errors/errors';
 
 @Injectable()
 export class UserValidationPipe implements PipeTransform {
   transform(user: any) {
     const error = UserValidationSchema.validate(user).error;
     if (error) {
-      throw new ApiError(error.message, 400);
+      throw new HttpException(error.message, HttpStatus.BAD_REQUEST);
     }
     return user;
   }
@@ -15,10 +20,6 @@ export class UserValidationPipe implements PipeTransform {
 
 const PASSWORD_REGEX = /[^a-zA-Z0-9]/g;
 const PASSWORD_MIN_LENGTH = 16;
-const PASSWORD_SPECIAL_CHARACTER_ERROR =
-  'Password must have at least one especial character';
-const PASSWORD_LOWERCASE_ERROR =
-  'Password must have at least one lowercase and one uppercase character';
 
 export const UserValidationSchema = Joi.object({
   email: Joi.string().email().required(),
@@ -27,8 +28,8 @@ export const UserValidationSchema = Joi.object({
     .custom((value) => {
       // if no especial character, throw error
       if (!value.match(PASSWORD_REGEX)) {
-        throw new ApiError(
-          PASSWORD_SPECIAL_CHARACTER_ERROR,
+        throw new HttpException(
+          AuthErrors.PASSWORD_SPECIAL_CHARACTER_MISSING,
           HttpStatus.BAD_REQUEST,
         );
       }
@@ -36,7 +37,10 @@ export const UserValidationSchema = Joi.object({
       const lowcase = value.toLowerCase();
       const uppercase = value.toUpperCase();
       if (value === lowcase || value === uppercase) {
-        throw new ApiError(PASSWORD_LOWERCASE_ERROR, HttpStatus.BAD_REQUEST);
+        throw new HttpException(
+          AuthErrors.PASSWORD_UPPERCASE_LOWERCASE_MISSING,
+          HttpStatus.BAD_REQUEST,
+        );
       }
     })
     .required(),

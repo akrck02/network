@@ -6,10 +6,9 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { NetworkController } from './controllers/network/network.controller';
 import { NetworkModule } from './modules/network/network.module';
 import { AuthModule } from './modules/auth/auth.module';
-import { CryptoModule } from './modules/crypto/crypto.module';
 import { AuthController } from './controllers/auth/auth.controller';
-import { APP_GUARD } from '@nestjs/core';
-import { JwtAuthGuard } from './auth/jwt-auth.guard';
+import { UsersService } from './services/users/users.service';
+import { UsersModule } from './modules/users/users.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -27,10 +26,10 @@ import { JwtAuthGuard } from './auth/jwt-auth.guard';
       },
     ),
     NetworkModule,
-    AuthModule,
-    CryptoModule,
+    AuthModule.forRoot(),
+    UsersModule,
   ],
   controllers: [AppController, NetworkController, AuthController],
-  providers: [AppService],
+  providers: [AppService, UsersService],
 })
 export class AppModule {}

@@ -1,11 +1,9 @@
-import { HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import { Connection, Model } from 'mongoose';
-import { ApiError } from 'src/errors/apierror';
-import { UserErrors } from 'src/errors/auth';
-import { UserRegisterDto } from 'src/models/dto/UserRegisterDto';
-import { User } from 'src/models/schemas/user';
-import { CryptoService } from '../crypto/crypto.service';
+import { UserErrors } from 'src/errors/errors';
+import { UserRegisterDto } from 'src/models/dto/UserRegister.dto';
+import { User, UserSchema } from 'src/models/schemas/user';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
@@ -14,7 +12,6 @@ export class AuthService {
     @InjectConnection() private connection: Connection,
     @InjectModel(User.name) private userModel: Model<User>,
     private readonly jwtService: JwtService,
-    private readonly cryptService: CryptoService,
   ) {}
 
   /**
@@ -36,16 +33,20 @@ export class AuthService {
    * @returns The user if it exists
    */
   async validateUser(email: string, password: string): Promise<any> {
-    const user = await this.userModel.findOne({
+    const user: User = await this.userModel.findOne({
       email: email,
     });
 
     if (!user) {
-      throw new ApiError(UserErrors.USER_NOT_FOUND, HttpStatus.NOT_FOUND);
+      throw new HttpException(UserErrors.USER_NOT_FOUND, HttpStatus.NOT_FOUND);
     }
 
-    if (!this.cryptService.compareBcrypt(password, user.password)) {
-      throw new ApiError(
+    const validPassword: boolean = await UserSchema.methods.validPassword(
+      password,
+      user.password,
+    );
+    if (!validPassword) {
+      throw new HttpException(
         UserErrors.PASSWORD_DOES_NOT_MATCH,
         HttpStatus.UNAUTHORIZED,
       );
@@ -63,7 +64,7 @@ export class AuthService {
     const user = {
       username: userRegisterDTO.username,
       email: userRegisterDTO.email,
-      password: userRegisterDTO.password,
+      password: UserSchema.methods.hashPassword(userRegisterDTO.password),
       createdAt: new Date(),
     };
 
@@ -73,7 +74,10 @@ export class AuthService {
         email: user.email,
       })
     ) {
-      throw new ApiError(UserErrors.USER_ALREADY_EXISTS, HttpStatus.CONFLICT);
+      throw new HttpException(
+        UserErrors.USER_ALREADY_EXISTS,
+        HttpStatus.CONFLICT,
+      );
     }
 
     const createdUser = new this.userModel(user);

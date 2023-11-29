@@ -8,4 +8,6 @@ export enum AuthErrors {
   UNAUTHORIZED = 'Unauthorized',
   INVALID_TOKEN = 'Invalid token',
   TOKEN_EXPIRED = 'Token expired',
+  PASSWORD_SPECIAL_CHARACTER_MISSING = 'Password must have at least one especial character',
+  PASSWORD_UPPERCASE_LOWERCASE_MISSING = 'Password must have at least one lowercase and one uppercase character',
 }

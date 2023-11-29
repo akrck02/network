@@ -9,7 +9,7 @@ import {
   UsePipes,
 } from '@nestjs/common';
 
-import { UserRegisterDto } from 'src/models/dto/UserRegisterDto';
+import { UserRegisterDto } from 'src/models/dto/UserRegister.dto';
 import { User } from 'src/models/schemas/user';
 import { Request } from 'express';
 import { AuthService } from 'src/services/auth/auth.service';
@@ -21,21 +21,21 @@ import { UserValidationPipe } from 'src/pipes/user/user.pipe';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Put('register')
   @UsePipes(UserValidationPipe)
+  @Put('register')
   async register(@Body() user: UserRegisterDto): Promise<User> {
     const result = await this.authService.register(user);
     return result;
   }
 
-  @Post('login')
   @UseGuards(LocalAuthGuard)
+  @Post('login')
   async login(@Req() request: Request) {
     return this.authService.login(request.user);
   }
 
-  @Get('profile')
   @UseGuards(JwtAuthGuard)
+  @Get('profile')
   getProfile() {
     return {
       user: 'test',
