@@ -7,8 +7,8 @@ import { NetworkController } from './controllers/network/network.controller';
 import { NetworkModule } from './modules/network/network.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { AuthController } from './controllers/auth/auth.controller';
-import { UsersService } from './services/users/users.service';
 import { UsersModule } from './modules/users/users.module';
+import { FriendsModule } from './modules/friends/friends.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -28,8 +28,9 @@ import { UsersModule } from './modules/users/users.module';
     NetworkModule,
     AuthModule.forRoot(),
     UsersModule,
+    FriendsModule,
   ],
   controllers: [AppController, NetworkController, AuthController],
-  providers: [AppService, UsersService],
+  providers: [AppService],
 })
 export class AppModule {}

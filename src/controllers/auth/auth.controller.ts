@@ -4,14 +4,12 @@ import {
   Get,
   Post,
   Put,
-  Req,
   UseGuards,
   UsePipes,
 } from '@nestjs/common';
 
 import { UserRegisterDto } from 'src/models/dto/UserRegister.dto';
 import { User } from 'src/models/schemas/user';
-import { Request } from 'express';
 import { AuthService } from 'src/services/auth/auth.service';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { LocalAuthGuard } from 'src/auth/local-auth.guard';

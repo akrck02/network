@@ -1,14 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { InjectConnection, InjectModel } from '@nestjs/mongoose';
-import { Connection, Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 import { User } from 'src/models/schemas/user';
 
 @Injectable()
 export class UsersService {
-  constructor(
-    @InjectConnection() private connection: Connection,
-    @InjectModel(User.name) private userModel: Model<User>,
-  ) {}
+  constructor(@InjectModel(User.name) private userModel: Model<User>) {}
 
   /**
    * Find a user by id
