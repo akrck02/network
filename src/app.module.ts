@@ -9,6 +9,8 @@ import { AuthModule } from './modules/auth/auth.module';
 import { AuthController } from './controllers/auth/auth.controller';
 import { UsersModule } from './modules/users/users.module';
 import { FriendsModule } from './modules/friends/friends.module';
+import { ChatController } from './controllers/chat/chat.controller';
+import { BullModule } from '@nestjs/bull';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -25,12 +27,29 @@ import { FriendsModule } from './modules/friends/friends.module';
         },
       },
     ),
+    BullModule.forRoot({
+      redis: {
+        host: process.env.REDIS_HOST,
+        port: +process.env.REDIS_PORT,
+      },
+    }),
+    BullModule.registerQueue({
+      name: 'friendRequest',
+      redis: {
+        port: +process.env.REDIS_PORT,
+      },
+    }),
     NetworkModule,
     AuthModule.forRoot(),
     UsersModule,
     FriendsModule,
   ],
-  controllers: [AppController, NetworkController, AuthController],
+  controllers: [
+    AppController,
+    AuthController,
+    ChatController,
+    NetworkController,
+  ],
   providers: [AppService],
 })
 export class AppModule {}

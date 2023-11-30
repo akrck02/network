@@ -1,0 +1,65 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "Network",
+    "dateExported": "2023-11-30T17:00:58.931Z",
+    "version": "1.1",
+    "folders": [],
+    "requests": [
+        {
+            "_id": "61de8ad6-da1a-4f29-92de-86c581156860",
+            "colId": "43d4dc1f-d7e3-4376-9afc-511a56045d22",
+            "containerId": "",
+            "name": "Login",
+            "url": "http://{{network.host}}:{{network.port}}/api/auth/login",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2023-11-30T16:48:34.065Z",
+            "modified": "2023-11-30T16:56:14.728Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"username\" : \"test@test.com\",\n  \"password\" : \"#T3stPassword1Akoer\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "63f1fc3c-8b95-4525-9627-547263c2badf",
+            "colId": "43d4dc1f-d7e3-4376-9afc-511a56045d22",
+            "containerId": "",
+            "name": "Register",
+            "url": "http://{{network.host}}:{{network.port}}/api/auth/register",
+            "method": "PUT",
+            "sortNum": 40000,
+            "created": "2023-11-30T16:48:56.419Z",
+            "modified": "2023-11-30T16:54:29.993Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n \"email\" : \"test@test.com\",\n \"username\" : \"testUser\",\n \"password\" : \"#T3stPassword1Akoer\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "1320fee9-8a34-450d-9cb2-dee366655bd2",
+            "colId": "43d4dc1f-d7e3-4376-9afc-511a56045d22",
+            "containerId": "",
+            "name": "GetProfile",
+            "url": "http://{{network.host}}:{{network.port}}/api/auth/profile",
+            "method": "GET",
+            "sortNum": 60000,
+            "created": "2023-11-30T16:49:08.871Z",
+            "modified": "2023-11-30T16:57:22.866Z",
+            "headers": [],
+            "params": [],
+            "auth": {
+                "type": "bearer",
+                "bearer": "{{network.token}}"
+            },
+            "tests": []
+        }
+    ]
+}
