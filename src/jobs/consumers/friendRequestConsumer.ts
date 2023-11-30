@@ -1,4 +1,4 @@
-import { Processor, Process } from '@nestjs/bull';
+import { Processor, Process, OnQueueError } from '@nestjs/bull';
 import { Job } from 'bull';
 import { FriendRequestDto } from 'src/models/dto/FriendRequest.dto';
 
@@ -13,6 +13,11 @@ export class FriendRequestConsumer {
       await job.progress(progress);
     }
     return {};
+  }
+
+  @OnQueueError()
+  async onError(error: Error) {
+    console.error(error);
   }
 }
 

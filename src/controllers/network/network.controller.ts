@@ -13,11 +13,9 @@ export class NetworkController {
   public async friendRequest(@Body() request: FriendRequestDto) {
     console.log(request);
 
-    const job = this.friendRequestQueue.add({
+    const job = this.friendRequestQueue.add('process', {
       follower: request.follower,
       following: request.following,
     });
-
-    
   }
 }
