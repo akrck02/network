@@ -1,6 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument } from 'mongoose';
 import { User } from './user';
+import { FriendStatus } from 'src/constants/friend';
 
 export type FriendDocument = HydratedDocument<Friend>;
 
@@ -13,6 +14,9 @@ export class Friend {
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: User.name })
   to: User;
+
+  @Prop({ default: FriendStatus.PENDING })
+  status: FriendStatus;
 }
 
 export const FriendSchema = SchemaFactory.createForClass(Friend);
