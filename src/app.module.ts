@@ -10,8 +10,6 @@ import { AuthController } from './controllers/auth/auth.controller';
 import { UsersModule } from './modules/users/users.module';
 import { FriendsModule } from './modules/friends/friends.module';
 import { ChatController } from './controllers/chat/chat.controller';
-import { BullModule } from '@nestjs/bull';
-import { FriendRequestConsumer } from './jobs/consumers/friendRequestConsumer';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -28,20 +26,8 @@ import { FriendRequestConsumer } from './jobs/consumers/friendRequestConsumer';
         },
       },
     ),
-    BullModule.forRoot({
-      redis: {
-        host: process.env.REDIS_HOST,
-        port: +process.env.REDIS_PORT,
-      },
-    }),
-    BullModule.registerQueue({
-      name: 'friendRequest',
-      redis: {
-        port: +process.env.REDIS_PORT,
-        password: process.env.REDIS_PASSWORD,
-      },
-    }),
-    NetworkModule,
+
+    NetworkModule.forRoot(),
     AuthModule.forRoot(),
     UsersModule,
     FriendsModule,
@@ -52,6 +38,6 @@ import { FriendRequestConsumer } from './jobs/consumers/friendRequestConsumer';
     ChatController,
     NetworkController,
   ],
-  providers: [AppService, FriendRequestConsumer],
+  providers: [AppService],
 })
 export class AppModule {}

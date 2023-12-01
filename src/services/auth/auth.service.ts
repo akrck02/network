@@ -2,10 +2,10 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import { Connection, Model } from 'mongoose';
 import { UserErrors } from 'src/errors/errors';
-import { UserRegisterDto } from 'src/models/dto/UserRegister.dto';
+import { UserRegisterDto } from 'src/models/dto/userRegister.dto';
 import { User, UserSchema } from 'src/models/schemas/user';
 import { JwtService } from '@nestjs/jwt';
-import { AuthTokenServeDto } from 'src/models/dto/AuthTokenServe.dto';
+import { AuthTokenServeDto } from 'src/models/dto/authTokenServe.dto';
 
 @Injectable()
 export class AuthService {

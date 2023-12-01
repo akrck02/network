@@ -8,7 +8,7 @@ import {
   UsePipes,
 } from '@nestjs/common';
 
-import { UserRegisterDto } from 'src/models/dto/UserRegister.dto';
+import { UserRegisterDto } from 'src/models/dto/userRegister.dto';
 import { User } from 'src/models/schemas/user';
 import { AuthService } from 'src/services/auth/auth.service';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';

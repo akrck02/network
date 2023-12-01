@@ -1,5 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
+import mongoose, { HydratedDocument } from 'mongoose';
 import * as bcrypt from 'bcrypt';
 import { UserType } from 'src/constants/user';
 
@@ -11,6 +11,9 @@ const SALT_WORK_FACTOR = 10;
   timestamps: true,
 })
 export class User {
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: User.name })
+  id: string;
+
   @Prop({
     type: String,
     required: true,

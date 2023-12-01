@@ -92,6 +92,24 @@ export class FriendsService {
   }
 
   /**
+   * Find a pending friend request
+   * @param followerId The id of the follower
+   * @param followingId The id of the following
+   * @returns The pending friend request
+   */
+  public async findPendingFriendRequest(
+    followerId: string,
+    followingId: string,
+  ): Promise<Friend> {
+    const pendingFriendRequest = await this.friendModel.findOne({
+      from: followerId,
+      to: followingId,
+      status: FriendStatus.PENDING,
+    });
+    return pendingFriendRequest;
+  }
+
+  /**
    * Update the status of a friend request
    * @param id The id of the friend request
    * @param status The new status of the friend request
@@ -102,6 +120,11 @@ export class FriendsService {
     status: FriendStatus,
   ): Promise<Friend> {
     const friend = await this.friendModel.findOne({ _id: id });
+
+    if (!friend) {
+      return null;
+    }
+
     friend.status = status;
     return friend.save();
   }
