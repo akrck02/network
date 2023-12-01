@@ -1,0 +1,172 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "Network",
+    "dateExported": "2023-12-01T18:50:17.690Z",
+    "version": "1.1",
+    "folders": [
+        {
+            "_id": "4e45c079-5ac4-436f-9653-15aa693e1c52",
+            "name": "auth",
+            "containerId": "",
+            "created": "2023-12-01T06:05:41.561Z",
+            "sortNum": 10000
+        },
+        {
+            "_id": "096f0bd5-aa81-4018-a946-14f93e6908cd",
+            "name": "network",
+            "containerId": "",
+            "created": "2023-12-01T06:05:55.187Z",
+            "sortNum": 20000
+        }
+    ],
+    "requests": [
+        {
+            "_id": "298680cf-ffa4-4539-aca5-abe0ba3db438",
+            "colId": "20b49fda-3c13-4651-9a93-1ccc2b6a40cf",
+            "containerId": "4e45c079-5ac4-436f-9653-15aa693e1c52",
+            "name": "Login",
+            "url": "http://{{network.host}}:{{network.port}}/api/auth/login",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2023-12-01T05:58:40.557Z",
+            "modified": "2023-12-01T17:27:33.928Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"username\" : \"test@test.com\",\n  \"password\" : \"#T3stPassword1Akoer\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "397f71fd-ae6e-482a-8c3c-abb402945008",
+            "colId": "20b49fda-3c13-4651-9a93-1ccc2b6a40cf",
+            "containerId": "4e45c079-5ac4-436f-9653-15aa693e1c52",
+            "name": "Register",
+            "url": "http://{{network.host}}:{{network.port}}/api/auth/register",
+            "method": "PUT",
+            "sortNum": 20000,
+            "created": "2023-12-01T05:58:40.558Z",
+            "modified": "2023-12-01T05:58:40.558Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n \"email\" : \"test@test.com\",\n \"username\" : \"testUser\",\n \"password\" : \"#T3stPassword1Akoer\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "c283d765-8916-437e-9c09-862900d0c7d6",
+            "colId": "20b49fda-3c13-4651-9a93-1ccc2b6a40cf",
+            "containerId": "4e45c079-5ac4-436f-9653-15aa693e1c52",
+            "name": "Profile get",
+            "url": "http://{{network.host}}:{{network.port}}/api/auth/profile",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2023-12-01T05:58:40.559Z",
+            "modified": "2023-12-01T05:58:40.559Z",
+            "headers": [],
+            "params": [],
+            "auth": {
+                "type": "bearer",
+                "bearer": "{{network.token}}"
+            },
+            "tests": []
+        },
+        {
+            "_id": "e5dab2b6-c7cd-4851-af52-c96672878cf1",
+            "colId": "20b49fda-3c13-4651-9a93-1ccc2b6a40cf",
+            "containerId": "096f0bd5-aa81-4018-a946-14f93e6908cd",
+            "name": "Friend request add",
+            "url": "http://{{network.host}}:{{network.port}}/api/network/friend/request",
+            "method": "POST",
+            "sortNum": 70000,
+            "created": "2023-12-01T06:07:00.022Z",
+            "modified": "2023-12-01T17:15:34.867Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"follower\" : \"65698415b3359d00f90a244b\",\n  \"following\" : \"656794c530d3c48c960b0b3c\"\n}",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "{{network.token}}"
+            },
+            "tests": []
+        },
+        {
+            "_id": "188437b9-9f3b-4c55-badb-c10e3bb14556",
+            "colId": "20b49fda-3c13-4651-9a93-1ccc2b6a40cf",
+            "containerId": "096f0bd5-aa81-4018-a946-14f93e6908cd",
+            "name": "Friend request accept",
+            "url": "http://{{network.host}}:{{network.port}}/api/network/friend/request/accept",
+            "method": "POST",
+            "sortNum": 80000,
+            "created": "2023-12-01T12:53:17.238Z",
+            "modified": "2023-12-01T17:16:30.485Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"id\" : \"6569f695d75e8f799d876a1d\"\n}",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "{{network.token}}"
+            },
+            "tests": []
+        },
+        {
+            "_id": "62ea45c5-657d-4f40-b8f1-77a7c55f830b",
+            "colId": "20b49fda-3c13-4651-9a93-1ccc2b6a40cf",
+            "containerId": "096f0bd5-aa81-4018-a946-14f93e6908cd",
+            "name": "Friend request reject",
+            "url": "http://{{network.host}}:{{network.port}}/api/network/friend/request/reject",
+            "method": "POST",
+            "sortNum": 90000,
+            "created": "2023-12-01T14:49:21.046Z",
+            "modified": "2023-12-01T17:12:47.407Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"id\" : \"6569f5ac3f372aeaf123595b\"\n}",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "{{network.token}}"
+            },
+            "tests": []
+        },
+        {
+            "_id": "3739bbe9-6257-471b-8a0e-95ebab3ed0a1",
+            "colId": "20b49fda-3c13-4651-9a93-1ccc2b6a40cf",
+            "containerId": "096f0bd5-aa81-4018-a946-14f93e6908cd",
+            "name": "Friends get",
+            "url": "http://{{network.host}}:{{network.port}}/api/network/friends/get",
+            "method": "POST",
+            "sortNum": 100000,
+            "created": "2023-12-01T17:13:41.420Z",
+            "modified": "2023-12-01T17:18:06.654Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"user\" : \"656794c530d3c48c960b0b3c\"\n}",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "{{network.token}}"
+            },
+            "tests": []
+        }
+    ]
+}
