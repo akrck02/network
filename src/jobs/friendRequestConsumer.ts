@@ -1,10 +1,4 @@
-import {
-  Processor,
-  Process,
-  OnQueueActive,
-  OnQueueFailed,
-  OnQueueWaiting,
-} from '@nestjs/bull';
+import { Processor, Process, OnQueueFailed } from '@nestjs/bull';
 import { HttpException, HttpStatus } from '@nestjs/common';
 import { Job } from 'bull';
 import { FriendStatus } from 'src/constants/friend';
@@ -22,18 +16,6 @@ export class FriendRequestConsumer {
     private readonly friendsService: FriendsService,
     private readonly usersService: UsersService,
   ) {}
-
-  @OnQueueWaiting()
-  onWaiting(job: Job) {
-    console.log(`Waiting job ${job.id} of type "${job.name}"`);
-  }
-
-  @OnQueueActive()
-  onActive(job: Job) {
-    console.log(`Processing job ${job.id} of type "${job.name}"`);
-
-    return job;
-  }
 
   @OnQueueFailed()
   async onFailed(job: Job, error: Error) {
@@ -79,6 +61,7 @@ export class FriendRequestConsumer {
       from: follower,
       to: following,
       status: FriendStatus.PENDING,
+      chatId: null,
     });
 
     registry.from.password = undefined;
@@ -107,6 +90,16 @@ export class FriendRequestConsumer {
             HttpStatus.NOT_FOUND,
           );
         }
+
+        if (friend.status === FriendStatus.ACCEPTED) {
+          return new HttpException(
+            FriendErrors.FRIEND_REQUEST_ALREADY_ACCEPTED,
+            HttpStatus.CONFLICT,
+          );
+        }
+
+        await this.friendsService.generateChatId(data.id);
+
         break;
       case FriendStatus.REJECTED:
         const removed = await this.friendsService.remove(data.id);

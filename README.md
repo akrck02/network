@@ -1,36 +1,66 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
-</p>
-
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
-
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+A social media app that allows users to follow each other and post messages. The app is built using NestJS, MongoDB, Bulljs, and Redis.
+
+This project is part of a coding challenge for a job interview and is not intended for production use, many features are missing due to time constraints.
 
 ## Installation
 
 ```bash
 $ npm install
 ```
+
+# Setting environment variables 
+This project uses environment variables to configure the database connection, encryption, and other settings. The environment variables are stored in two .env files,
+the docker stack will use the .env file in the docker directory, and the app will use the .env file in the root directory.
+
+## Docker .env file
+```.env
+MONGO_ADMIN_USERNAME=a username for the mongo admin user (e.g. mongo)
+MONGO_ADMIN_PASSWORD=aSecurePasswordForMongoAdmin
+MONGO_ADMIN_SERVER=admin-server-name (e.g mongodb)
+IP_MONGODB=your-mongo-ip (e.g. 172.29.0.12) 
+MASK_MONGODB=mongo-mask (e.g 172.29.0.0/16)
+PORT_MONGODB_HOST=your-port (e.g. 27017)
+PORT_MONGODB_CONTAINER=27017
+MONGO_DATA_VOLUME_PATH_HOST=your-path/mongo-data
+MONGO_DATA_VOLUME_PATH_CONTAINER=/data/db
+
+REDIS_PASSWORD=aSecurePasswordForRedis
+REDIS_LOG_LEVEL=warning
+REDIS_PORT_HOST=your-port (e.g. 6379)
+REDIS_PORT_CONTAINER=6379
+REDIS_DATA_VOLUME_PATH_HOST=your-path/redis-data
+REDIS_DATA_VOLUME_PATH_CONTAINER=/data
+```
+
+## App .env file
+```.env
+NETWORK_DB=your-database-name (e.g. network-dev)
+MONGO_HOST=127.0.0.1
+MONGO_PORT=yout-port (e.g. 27017)
+MONGO_USERNAME=your-mongo-username (e.g. mongo)
+MONGO_PASSWORD=aSecurePasswordForMongoAdmin
+
+JWT_SECRET=your-jwt-secret
+JWT_EXPIRES_IN=expiretime (e.g 1d)
+
+REDIS_HOST=127.0.0.1
+REDIS_PORT=your-port (e.g. 6379)
+REDIS_PASSWORD=aSecurePasswordForRedis
+```
+
+
+# Start database docker stack
+We will use docker-compose to start the database stack. The stack will include MongoDB, Redis, and Mongo Express for viewing the database.
+
+in the docker directory, run the following command:
+
+```bash
+  docker-compose up 
+```
+
 
 ## Running the app
 
@@ -58,16 +88,45 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
-## Support
+## API Documentation
+The API documentation is available at http://localhost:3000/api in Swagger format.
+![Swagger](./resources/swagger.png)
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## Database diagram
+![Database diagram](./resources/database.png)
 
-## Stay in touch
+## Queue diagram
+The queue is used to handle the sending of friend requests and their acceptance with two different types of jobs, the first type is for sending friend requests, and the second type is for accepting or rejecting friend requests. In the case of accepting a friend request, the job will also create a chat id for the two users and add it to the database in order to allow them to chat with each other with the websocket server in [ws://localhost:3000](http://localhost:3000) in "chat".
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+![Queue diagram](./resources/queue.png)
 
-## License
+## Testing the API 
+The API can be tested using the built in swagger, but in order to keep the things simple i used thunderclient for vscode, you can download it from [here](https://marketplace.visualstudio.com/items?itemName=rangav.vscode-thunder-client).
+![./resources/ThunderClient.png](./resources/thunderClient.png)
 
-Nest is [MIT licensed](LICENSE).
+![./resources/ThunderClient2.png](./resources/ThunderClientExample2.png)
+
+![./resources/ThunderClient.png](./resources/ThunderClientExample.png)
+
+### Colections and environment variables
+I created a request collection in requests folder, there are two jsons you can import to the thunderclient extension, one for the requests and the other for the environment variables they use.
+
+## Testing websocket server
+In order to test the websocket server, i used Green Client for socket.io, you can download it from [here](https://marketplace.visualstudio.com/items?itemName=martin-vana.vscode-extension-green-socket-io).
+![./resources/WebSocketViewerExtension.png](./resources/WebSocketViewerExtension.png)] 
+
+## Conection to the websocket server
+Connect to the websocket server at [ws://localhost:3000](http://localhost:3000)
+
+![./resources/Websocket%20example.png](./resources/Websocket%20example.png)
+
+ and send the following message:
+```json
+{
+    "username": "your-username",
+    "message": "Hello world!",
+    "chatId": "your-chat-id"
+}
+```
+
+![./resources/Websocket%20example%202.png](./resources/Websocket%20example%202.png)

@@ -9,7 +9,8 @@ import { AuthModule } from './modules/auth/auth.module';
 import { AuthController } from './controllers/auth/auth.controller';
 import { UsersModule } from './modules/users/users.module';
 import { FriendsModule } from './modules/friends/friends.module';
-import { ChatController } from './controllers/chat/chat.controller';
+import { ChatModule } from './modules/chat/chat.module';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -31,13 +32,9 @@ import { ChatController } from './controllers/chat/chat.controller';
     AuthModule.forRoot(),
     UsersModule,
     FriendsModule,
+    ChatModule,
   ],
-  controllers: [
-    AppController,
-    AuthController,
-    ChatController,
-    NetworkController,
-  ],
+  controllers: [AppController, AuthController, NetworkController],
   providers: [AppService],
 })
 export class AppModule {}

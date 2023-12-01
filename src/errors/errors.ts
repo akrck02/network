@@ -15,4 +15,5 @@ export enum AuthErrors {
 export enum FriendErrors {
   FRIEND_REQUEST_ALREADY_EXISTS = 'Friend request already exists',
   FRIEND_REQUEST_NOT_FOUND = 'Friend request not found',
+  FRIEND_REQUEST_ALREADY_ACCEPTED = 'Friend request already accepted',
 }

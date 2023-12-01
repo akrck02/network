@@ -14,6 +14,10 @@ import { AuthService } from 'src/services/auth/auth.service';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { LocalAuthGuard } from 'src/auth/local-auth.guard';
 import { UserValidationPipe } from 'src/pipes/user/user.pipe';
+import { PremiumGuard } from 'src/auth/premium-guard';
+import { SecurityGuard } from 'src/auth/security-guard';
+import { UserLoginDto } from 'src/models/dto/userLogin.dto';
+import { ApiBasicAuth, ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('api/auth')
 export class AuthController {
@@ -28,12 +32,14 @@ export class AuthController {
 
   @Post('login')
   @UseGuards(LocalAuthGuard)
-  async login(@Body() user: User) {
+  @ApiBasicAuth()
+  async login(@Body() user: UserLoginDto) {
     return this.authService.login(user);
   }
 
   @Get('profile')
-  @UseGuards(JwtAuthGuard)
+  @UseGuards(JwtAuthGuard, SecurityGuard, PremiumGuard)
+  @ApiBearerAuth()
   getProfile() {
     return {
       user: 'test',

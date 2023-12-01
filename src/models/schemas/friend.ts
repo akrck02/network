@@ -17,6 +17,9 @@ export class Friend {
 
   @Prop({ default: FriendStatus.PENDING })
   status: FriendStatus;
+
+  @Prop({ type: mongoose.Schema.Types.String, required: false })
+  chatId: string;
 }
 
 export const FriendSchema = SchemaFactory.createForClass(Friend);

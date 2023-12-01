@@ -1,4 +1,9 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectConnection, InjectModel } from '@nestjs/mongoose';
 import { Connection, Model } from 'mongoose';
 import { UserErrors } from 'src/errors/errors';
@@ -27,9 +32,14 @@ export class AuthService {
       email: user.username,
     });
 
+    if (!foundUser) {
+      throw new UnauthorizedException();
+    }
+
+    foundUser.password = undefined;
     return {
       access_token: this.jwtService.sign(payload),
-      user_type: foundUser?.type,
+      user: foundUser,
     };
   }
 

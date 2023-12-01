@@ -128,4 +128,35 @@ export class FriendsService {
     friend.status = status;
     return friend.save();
   }
+
+  /**
+   * Generate a chat id and add it to the friend
+   * @param id The id of the registry
+   * @returns The uuid of the chat
+   */
+  public async generateChatId(id: string): Promise<string> {
+    const uuid = crypto.randomUUID();
+    const updated = await this.friendModel.updateOne(
+      { _id: id },
+      { chatId: uuid },
+    );
+
+    if (!updated) {
+      return null;
+    }
+
+    return uuid;
+  }
+
+  /**
+   * Find a friend registry by chat id
+   * @param chatId The id of the chat
+   * @returns The friend registry
+   */
+  public async findFriendRegistryByChatId(chatId: string): Promise<Friend> {
+    console.log(`searching for chat id ${chatId}`);
+
+    const friend = await this.friendModel.findOne({ chatId: chatId || '-1' });
+    return friend;
+  }
 }
